@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj": {}
+    "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\MonitorOnGit\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj": {
+    "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\MonitorOnGit\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj",
+        "projectUniqueName": "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\MonitorOnGit\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj",
         "projectName": "SinalRtest",
-        "projectPath": "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj",
+        "projectPath": "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\MonitorOnGit\\DemoProsject\\SinalRtest\\SinalRtest\\SinalRtest.csproj",
         "packagesPath": "C:\\Users\\morten.olsen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\DemoProsject\\SinalRtest\\SinalRtest\\obj\\",
+        "outputPath": "C:\\Users\\morten.olsen\\source\\repos\\React\\Monitor\\MonitorOnGit\\DemoProsject\\SinalRtest\\SinalRtest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
