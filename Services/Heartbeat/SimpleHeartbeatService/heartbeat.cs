@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SimpleHeartbeatService
             _timer.Elapsed += TimerElapsed;
         }
          static HttpClient client = new HttpClient();
+    
 
 
         public class MyService
@@ -40,34 +42,39 @@ namespace SimpleHeartbeatService
 
         private static async Task RunAsync(MyService service)
         {
-            using (var client = new HttpClient())
+
+
+
+
+            var connection = new HubConnectionBuilder()
+           .WithUrl("https://localhost:44306/Message")
+            .Build();
+
+
+
+
+            await connection.StartAsync();
+
+          
+
+            await connection.InvokeAsync("SendMessage", "Webpage", service);
+
+
+
+           /* using (var client = new HttpClient())
             {
+
+
                 client.BaseAddress = new Uri("https://localhost:44306/Message");
                 //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("OAuth","xyz");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
-                /* HttpResponseMessage response = await client.GetAsync("https://localhost:44306/Message" );
-                 if (response.IsSuccessStatusCode)
-                 {
-                     //Sites sites = await response.Content.ReadAsAsync<Sites>();
-                     Console.WriteLine("Denne tjenesten kjører ikke:" +service.displayName);
-                 }
-                 else { Console.WriteLine("Det er noe galt: " + response.StatusCode); }
+               
+                
 
-             
-
-
-
-
-                 if (response.IsSuccessStatusCode)
-                 {
-                     Uri siteUrl = response.Headers.Location;
-                     Console.WriteLine(siteUrl);
-                 }*/
-
-                Console.WriteLine("Post");
+               
 
                 HttpResponseMessage response;
                 
@@ -80,7 +87,7 @@ namespace SimpleHeartbeatService
                 }
                 else { Console.WriteLine("Det er noe galt: " + response.StatusCode); }
 
-            }
+            }*/
         }
 
 
@@ -98,16 +105,18 @@ namespace SimpleHeartbeatService
 
                     Random rnd = new Random();
                     int randomTMSId = rnd.Next(1,5);
-                       Console.WriteLine("Dette blir TMS Id:"+ randomTMSId );
+                   Console.WriteLine("Dette blir TMS Id:"+ randomTMSId );
                    int  srvId= 1;
                     if( srv.ServiceName=="XboxNetApiSvc"){
 
-                        srvId=7;
+                          srvId=7;
                         }
-else if(srv.ServiceName=="ose64"){
+                    else if(srv.ServiceName=="ose64"){
 
-srvId=6;
-}else if( srv.ServiceName=="MozillaMaintenance"){srvId=5; }
+                            srvId=6;
+                    }else if( srv.ServiceName=="MozillaMaintenance"){
+                           srvId=5;
+                    }
                     
                      
                     

@@ -39,7 +39,7 @@ namespace SinalRtest.Controllers
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
-            return "value";
+            return "Hei hei fra ap1";
         }
 
         // POST: api/TMS

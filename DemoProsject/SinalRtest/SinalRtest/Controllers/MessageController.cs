@@ -89,6 +89,7 @@ namespace SinalRtest.Controllers
             db.SaveChanges();
 
             _messageHubContext.Clients.All.SendAsync("send", "Denne servicen har stoppet"+ms.displayName);
+          
             return Ok();
 
         }
