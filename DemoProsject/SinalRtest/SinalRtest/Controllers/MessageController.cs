@@ -59,7 +59,7 @@ namespace SinalRtest.Controllers
 
 
 
-            _messageHubContext.Clients.All.SendAsync("send", "Denne servicen har stoppet");
+            _messageHubContext.Clients.All.SendAsync("Send", "Denne servicen har stoppet");
             //var updateted = db.TMS.Find(1);
 
 
@@ -70,16 +70,39 @@ namespace SinalRtest.Controllers
         public IActionResult updateStatusTMS(MyService ms)
             
         {
+            
 
-            /*var Tf_services = db.TF_Services.ToList();
-            var servId =Tf_services.SingleOrDefault(s => s.Name == ms.name);
-            int test;
-         
-                 test = servId.Id;*/
+
+
+                var Servicefault = new ServicefaultHistory();
+               
+                ServicesRunningOnTMS updatetServices = db.RunningServices.SingleOrDefault(x => x.TMS_Id == ms.TmsId && x.ServiceId == ms.ServiceId);
            
-           
-            ServicesRunningOnTMS updatetServices = db.RunningServices.SingleOrDefault(x => x.TMS_Id == ms.TmsId && x.ServiceId == ms.ServiceId);
             updatetServices.Status = ms.status;
+            if (ms.status == "Running")
+            {
+                updatetServices.RunningSince = DateTime.Now;
+            }
+           
+            if (ms.status == "Stopped")
+            {
+              updatetServices.RunningSince = DateTime.Now;
+             //if (!ModelState.IsValid)
+
+                Servicefault.TmsId = ms.TmsId;
+                Servicefault.ServiceId = ms.ServiceId;
+                if (ms.Description ==null)
+                {
+                    Servicefault.Description = "Description er null fra webben";
+                }
+                else { Servicefault.Description = ms.Description; }
+              
+                Servicefault.FaultTime = DateTime.Now;
+
+                db.ServicefaultHistory.Add(Servicefault);
+                db.SaveChanges();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest("det er her det feiler: " + ModelState);
@@ -87,16 +110,36 @@ namespace SinalRtest.Controllers
 
             db.Entry(updatetServices).State = EntityState.Modified;
             db.SaveChanges();
-
-            _messageHubContext.Clients.All.SendAsync("send", "Denne servicen har stoppet"+ms.displayName);
-          
+           
+            _messageHubContext.Clients.All.SendAsync("Send", "Denne servicen har endret status:"+ms.displayName);
+            
             return Ok();
+
+        }
+        [Route("[action]")]
+        [HttpPost]
+        public IActionResult startService(MyService ms)
+
+        {
+
+       
+            _messageHubContext.Clients.All.SendAsync("Start",  ms);
+
+            return Ok(ms);
 
         }
 
 
+
+
+
     }
-    public class MyService
+    public class MessagePost
+    {
+        public virtual string message { get; set; }
+    }
+
+   /* public class MyService
     {
         public string Id { get; set; }
         public int TmsId { get; set; }
@@ -107,5 +150,5 @@ namespace SinalRtest.Controllers
         public string MachineName { get; set; }
 
 
-    }
+    }*/
 }

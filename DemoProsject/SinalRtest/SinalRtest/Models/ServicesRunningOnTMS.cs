@@ -15,5 +15,6 @@ namespace SinalRtest.Models
         public int TMS_Id { get; set; }
         public int ServiceId { get; set; }
         public string Status { get; set; }
+        public DateTime RunningSince { get; set; }
     }
 }

@@ -16,5 +16,6 @@ namespace SinalRtest.Models
         public string Name { get; set; }
         public string  DisplayName { get; set; }
         public string Status { get; set; }
+        public DateTime? RunningSince { get; set; }
     }
 }

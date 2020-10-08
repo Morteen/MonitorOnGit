@@ -16,6 +16,9 @@ namespace SimpleHeartbeatService
    public class Heartbeat
     {
         private readonly Timer _timer;
+     
+      
+
 
         public Heartbeat()
         {
@@ -46,48 +49,35 @@ namespace SimpleHeartbeatService
 
 
 
-            var connection = new HubConnectionBuilder()
-           .WithUrl("https://localhost:44306/Message")
-            .Build();
+            ///Dette er vanlig HTTP client og ikke signalR
+
+             using (var client = new HttpClient())
+             {
+
+
+                 client.BaseAddress = new Uri("https://localhost:44306/Message");
+                 //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("OAuth","xyz");
+                 client.DefaultRequestHeaders.Accept.Clear();
+                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
 
 
-            await connection.StartAsync();
-
-          
-
-            await connection.InvokeAsync("SendMessage", "Webpage", service);
 
 
 
-           /* using (var client = new HttpClient())
-            {
+                 HttpResponseMessage response;
 
 
-                client.BaseAddress = new Uri("https://localhost:44306/Message");
-                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("OAuth","xyz");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                 response = await client.PostAsJsonAsync("https://localhost:44306/Message", service);
+                 if (response.IsSuccessStatusCode)
+                 {
 
+                     Console.WriteLine("Denne tjenesten kjører ikke:" + service.displayName);
+                 }
+                 else { Console.WriteLine("Det er noe galt: " + response.StatusCode); }
 
-               
-                
-
-               
-
-                HttpResponseMessage response;
-                
-               
-                response = await client.PostAsJsonAsync("https://localhost:44306/Message", service);
-                if (response.IsSuccessStatusCode)
-                {
-                    
-                    Console.WriteLine("Denne tjenesten kjører ikke:" + service.displayName);
-                }
-                else { Console.WriteLine("Det er noe galt: " + response.StatusCode); }
-
-            }*/
+             }
         }
 
 
@@ -96,7 +86,7 @@ namespace SimpleHeartbeatService
         {
         
 
-            string[] MyServices = { "CscService", "ose64", "MozillaMaintenance", "XboxNetApiSvc" };
+            string[] MyServices = { "CscService", "ose64", "MozillaMaintenance", "XboxNetApiSvc", "WebsiteStatus" };
             foreach(string service in MyServices)
             {
                 var srv = new ServiceController(service);
@@ -117,13 +107,16 @@ namespace SimpleHeartbeatService
                     }else if( srv.ServiceName=="MozillaMaintenance"){
                            srvId=5;
                     }
-                    
-                     
-                    
-                     
+                    else if (srv.ServiceName == "WebsiteStatus")
+                    {
+                        srvId = 10;
+                    }
 
 
-                RunAsync(new MyService { ServiceId =srvId,TmsId = randomTMSId,displayName = srv.DisplayName, status=srv.Status.ToString(),name = srv.ServiceName,MachineName=srv.MachineName}).Wait();
+
+
+
+                    RunAsync(new MyService { ServiceId =srvId,TmsId = randomTMSId,displayName = srv.DisplayName, status=srv.Status.ToString(),name = srv.ServiceName,MachineName=srv.MachineName}).Wait();
                 Console.WriteLine("RunAsync kjører");
                 string[] lines = new string[]{ "Servicenavn: "+srv.DisplayName.ToString()+" Status:"+ srv.Status.ToString()+"  Maskinnavn:" + srv.MachineName+" TMSID:" +randomTMSId };
                 File.AppendAllLines(@"C:\Users\morten.olsen\Documents\Morten\Heartbeat\Heartbeat.txt", lines);
@@ -148,14 +141,20 @@ namespace SimpleHeartbeatService
 
            }
 
-           
-         
-           
-          
-          
-            //if (srv.Status != ServiceControllerStatus.Running) ;
-                //srv.Start();
         
+
+
+
+
+
+
+
+
+
+
+        //if (srv.Status != ServiceControllerStatus.Running) ;
+        //srv.Start();
+
         public void Start()
         {
             _timer.Start();
@@ -169,7 +168,12 @@ namespace SimpleHeartbeatService
 
 
 
+   
 
 
-    
+  
+
+
+
+
 }

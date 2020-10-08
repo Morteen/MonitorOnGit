@@ -16,6 +16,7 @@ namespace SinalRtest.Models
         public DbSet<TMS> TMS { get; set; }
         public DbSet<TF_Services> TF_Services { get; set; }
         public DbSet<ServicesRunningOnTMS> RunningServices { get; set; }
+        public DbSet<ServicefaultHistory> ServicefaultHistory { get; set; }
 
     }
 

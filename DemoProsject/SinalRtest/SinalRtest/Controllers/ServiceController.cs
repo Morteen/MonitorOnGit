@@ -204,7 +204,8 @@ namespace SinalRtest.Controllers
                     var service = list.FirstOrDefault(x => x.Id == sr.ServiceId); 
                     service.Status = sr.Status;
                    service.Id = sr.ServiceId;
-                    newDto.TF_Services.Add(new TF_Services { Id=service.Id,Name = service.Name, DisplayName = service.DisplayName, Status = sr.Status });
+                    service.RunningSince = sr.RunningSince;
+                    newDto.TF_Services.Add(new TF_Services { Id=service.Id,Name = service.Name, DisplayName = service.DisplayName, Status = sr.Status,RunningSince=sr.RunningSince });
 
                 }
 
@@ -270,6 +271,7 @@ namespace SinalRtest.Controllers
                     {
                         var service = list.FirstOrDefault(x=>x.Id==sr.ServiceId);
                         service.Status = sr.Status;
+                        
                         newDto.TF_Services.Add(new TF_Services { Name = service.Name, DisplayName = service.DisplayName, Status = sr.Status });
                        
                     }
